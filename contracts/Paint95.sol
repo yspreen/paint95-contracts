@@ -1,6 +1,15 @@
 //SPDX-License-Identifier: MIT
 //Contract based on [https://docs.openzeppelin.com/contracts/3.x/erc721](https://docs.openzeppelin.com/contracts/3.x/erc721)
 
+/**
+██████╗  █████╗ ██╗███╗   ██╗████████╗ █████╗ ███████╗   ██╗  ██╗██╗   ██╗███████╗
+██╔══██╗██╔══██╗██║████╗  ██║╚══██╔══╝██╔══██╗██╔════╝   ╚██╗██╔╝╚██╗ ██╔╝╚══███╔╝
+██████╔╝███████║██║██╔██╗ ██║   ██║   ╚██████║███████╗    ╚███╔╝  ╚████╔╝   ███╔╝ 
+██╔═══╝ ██╔══██║██║██║╚██╗██║   ██║    ╚═══██║╚════██║    ██╔██╗   ╚██╔╝   ███╔╝  
+██║     ██║  ██║██║██║ ╚████║   ██║    █████╔╝███████║██╗██╔╝ ██╗   ██║   ███████╗
+╚═╝     ╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝   ╚═╝    ╚════╝ ╚══════╝╚═╝╚═╝  ╚═╝   ╚═╝   ╚══════╝
+ */
+
 pragma solidity ^0.8.7;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
@@ -124,12 +133,11 @@ contract Paint95 is
     {
         return
             interfaceId == type(IERC2981).interfaceId ||
-            ERC721Enumerable.supportsInterface(interfaceId) ||
-            ERC721.supportsInterface(interfaceId);
+            ERC721Enumerable.supportsInterface(interfaceId);
     }
 
     /**
-     * Override isApprovedForAll to auto-approve OS's proxy contract
+     * Override isApprovedForAll to auto-approve OS's proxy address
      */
     function isApprovedForAll(address _owner, address _operator)
         public
@@ -168,6 +176,16 @@ contract Paint95 is
         returns (address receiver, uint256 royaltyAmount)
     {
         require(_exists(tokenId), "Nonexistent token");
+
+        /**
+         * there had been plans to support one royalty address per NFT,
+         * creating a new wallet with each piece that gets paid out
+         * weekly. Sadly, IERC165 isn't fully supported yet, and on
+         * OpenSea you still have only one address to specify. Thus the
+         * architecture was changed. For a previous version of this
+         * contract. see:
+         * https://mumbai.polygonscan.com/address/0x079a01cE8Ac2025dBc73b7D1bEB7F2Be54a0107b#code
+         */
 
         return (
             _royaltyAddresses[tokenId],
