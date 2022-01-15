@@ -68,7 +68,7 @@ function decryptAccount() {
  * @type import('hardhat/config').HardhatUserConfig
  */
 module.exports = {
-  solidity: "0.8.7",
+  solidity: "0.8.9",
   networks: {
     rinkeby: {
       url: "https://rinkeby.infura.io/v3/xxx", //<---- YOUR INFURA ID! (or it won't work)
