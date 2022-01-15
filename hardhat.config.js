@@ -61,6 +61,20 @@ function decryptAccount() {
   }
 }
 
+// This is a sample Hardhat task. To learn how to create your own go to
+// https://hardhat.org/guides/create-task.html
+task("mint", "Mints an NFT")
+  .addPositionalParam("imageFilePath")
+  .addPositionalParam("recipient")
+  .addOptionalPositionalParam("nftName")
+  .setAction(async (taskArgs) => {
+    const main = require("./scripts/mint.js");
+    await main(taskArgs).catch((error) => {
+      console.error(error);
+      process.exit(1);
+    });
+  });
+
 // You need to export an object to set up your config
 // Go to https://hardhat.org/config/ to learn more
 

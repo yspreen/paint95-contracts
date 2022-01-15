@@ -53,15 +53,16 @@ contract Paint95 is
 
     // ============ PUBLIC FUNCTIONS FOR MINTING ============
 
-    function mint(address owner, string memory metadataURI)
+    function mint(address owner_, string memory metadataURI)
         external
         nonReentrant
         onlyOwner
         returns (uint256)
     {
         uint256 id = nextTokenId();
-        _safeMint(owner, id);
+        _safeMint(owner(), id);
         _setTokenURI(id, metadataURI);
+        _transfer(owner(), owner_, id);
         return id;
     }
 

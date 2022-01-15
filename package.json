@@ -13,17 +13,18 @@
     "hardhat": "^2.8.2"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^4.4.2"
+    "@openzeppelin/contracts": "^4.4.2",
+    "ipfs-http-client": "^55.0.0"
   },
   "scripts": {
     "deploy:mumbai": "hardhat run scripts/deploy.js --network mumbai",
     "verify:mumbai": "hardhat run scripts/verify.js --network mumbai",
-    "mint:mumbai": "hardhat run scripts/mint.js --network mumbai",
+    "mint:mumbai": "hardhat mint --network mumbai",
     "deploy:rinkeby": "hardhat run scripts/deploy.js --network rinkeby",
     "verify:rinkeby": "hardhat run scripts/verify.js --network rinkeby",
-    "mint:rinkeby": "hardhat run scripts/mint.js --network rinkeby",
+    "mint:rinkeby": "hardhat mint --network rinkeby",
     "deploy:polygon": "hardhat run scripts/deploy.js --network polygon",
     "verify:polygon": "hardhat run scripts/verify.js --network polygon",
-    "mint:polygon": "hardhat run scripts/mint.js --network polygon"
+    "mint:polygon": "hardhat mint --network polygon"
   }
 }
