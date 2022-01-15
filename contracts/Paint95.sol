@@ -46,23 +46,22 @@ contract Paint95 is
 
     string public verificationHash;
     bool private isOpenSeaProxyActive = true;
-    mapping(uint256 => address) private _royaltyAddresses;
 
     // ============ ACCESS CONTROL/SANITY MODIFIERS ============
 
-    constructor() ERC721("Paint95", "Painting") {}
+    constructor() ERC721("Paint95Test", "Painting") {}
 
     // ============ PUBLIC FUNCTIONS FOR MINTING ============
 
-    function mint(
-        address owner,
-        address royalty,
-        string memory metadataURI
-    ) external payable nonReentrant onlyOwner returns (uint256) {
+    function mint(address owner, string memory metadataURI)
+        external
+        nonReentrant
+        onlyOwner
+        returns (uint256)
+    {
         uint256 id = nextTokenId();
         _safeMint(owner, id);
         _setTokenURI(id, metadataURI);
-        _royaltyAddresses[id] = royalty;
         return id;
     }
 
@@ -139,7 +138,7 @@ contract Paint95 is
     /**
      * Override isApprovedForAll to auto-approve OS's proxy address
      */
-    function isApprovedForAll(address _owner, address _operator)
+    function isApprovedForAll(address owner, address operator)
         public
         view
         override
@@ -148,13 +147,13 @@ contract Paint95 is
         // if OpenSea's ERC721 Proxy Address is detected, auto-return true
         if (
             isOpenSeaProxyActive &&
-            _operator == address(0x58807baD0B376efc12F5AD86aAc70E78ed67deaE)
+            operator == address(0x58807baD0B376efc12F5AD86aAc70E78ed67deaE)
         ) {
             return true;
         }
 
         // otherwise, use the default ERC721.isApprovedForAll()
-        return ERC721.isApprovedForAll(_owner, _operator);
+        return ERC721.isApprovedForAll(owner, operator);
     }
 
     function tokenURI(uint256 tokenId)
@@ -187,10 +186,7 @@ contract Paint95 is
          * https://mumbai.polygonscan.com/address/0x079a01cE8Ac2025dBc73b7D1bEB7F2Be54a0107b#code
          */
 
-        return (
-            _royaltyAddresses[tokenId],
-            SafeMath.div(SafeMath.mul(salePrice, 10), 100)
-        );
+        return (owner(), SafeMath.div(SafeMath.mul(salePrice, 10), 100));
     }
 
     /**
