@@ -3,12 +3,18 @@
 //
 // When running the script with `npx hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
-require("hardhat");
 const fs = require("fs");
 const IPFS = require("ipfs-http-client");
 const ipfs = IPFS.create(new URL("https://ipfs.infura.io:5001"));
 
-module.exports = async (args) => {
+module.exports = async (args, outsideHardhat = false) => {
+  let eth;
+  if (outsideHardhat) {
+    eth = require("ethers");
+  } else {
+    require("hardhat");
+    eth = ethers;
+  }
   const contractAddress = fs
     .readFileSync("./.contract.addr.txt")
     .toString()
@@ -61,7 +67,7 @@ module.exports = async (args) => {
   );
   const metaIpfs = `ipfs://${metaIpfsResult.cid}/paint95.json`;
 
-  const Contract = await ethers.getContractFactory("Paint95");
+  const Contract = await eth.getContractFactory("Paint95");
   const hardhatContract = await Contract.attach(contractAddress);
 
   const response = await hardhatContract.getLastTokenId();
